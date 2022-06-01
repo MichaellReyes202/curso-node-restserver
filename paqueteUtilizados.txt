@@ -1,3 +1,9 @@
 express
 dotenv
 cors 
+
+=> git checkout -- . para recuperar todo hasta el ultimo commit 
+git tag -a v1.0.0 -m "Fin seccion 8" => para tener un listado de las anotaciones de las versiones del proyecto
+git push --tags => para subir los tags
+
+nota => Puede decirse que un tag es un nombre que puedes usar para marcar un punto específico en la historia de un repositorio.
