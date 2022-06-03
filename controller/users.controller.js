@@ -16,7 +16,6 @@ const usersGet = async (req = request, res = response) => {
         Usuario.find(query).skip(Number(desde)).limit(Number(limit))
     ]);
 
-
     res.json({
         msg: 'Get API - controlador',
         total, usuarios
