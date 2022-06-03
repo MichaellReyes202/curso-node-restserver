@@ -1,28 +1,33 @@
 
 const { Router } = require('express');
-const { 
-    usersGet, 
-    usersPut, 
-    usersPost, 
+const { check ,oneOf } = require('express-validator');
+const {
+    usersGet,
+    usersPut,
+    usersPost,
     usersDelete,
-    usersPatch 
+    usersPatch
 } = require('../controller/users.controller');
+const { createValidationFor, checkValidationResult } = require('../middlewares/checkExpress');
 
 const router = Router();
 
 router.get('/', usersGet)
 
 // para actualizar data
-router.put('/:id', usersPut);
+router.put('/:id',[createValidationFor('putUser'),checkValidationResult],usersPut);
 
 // crear nuevos recursos
-router.post('/', usersPost);
+router.post('/',[createValidationFor('postUser'),checkValidationResult],usersPost);
 
 // para borrar algo
-router.delete('/', usersDelete);
+router.delete('/:id',[createValidationFor('deleteUser'),checkValidationResult], usersDelete);
 
 // para hacer actualizaciones parciales
 router.patch('/', usersPatch);
+
+
+
 
 
 module.exports = router;
