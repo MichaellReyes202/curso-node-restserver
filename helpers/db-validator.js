@@ -7,7 +7,6 @@ const isRoleValido = async (rol = "") => {
     const existeRol = await Role.findOne({rol});
     if(!existeRol){
         throw new Error(`El rol ${rol} no esta registrado en la BD`);
-        //return Promise.reject('El rol no existe');
     } 
 }
 // verificar si el correo existe

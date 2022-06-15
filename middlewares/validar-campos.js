@@ -1,4 +1,6 @@
 
+
+// este fue el que hizo el profesor del curso
 const { validationResult} = require('express-validator');
 
 const validarCampos = (req,res,next)=>{

@@ -65,24 +65,27 @@ const usersPut = async (req, res = response) => {
     })
 }
 const usersPatch = (req, res = response) => {
+    console.log(req);
     res.json({
         msg: 'Patch API - controlador'
     })
 }
 const usersDelete = async (req, res = response) => {
-    const { id } = req.params;
+    // Borrado de forma fisica   => const usuario = await Usuario.findByIdAndDelete(id);
 
-    // Borrado de forma fisica
-    //const usuario = await Usuario.findByIdAndDelete(id);
+    // El id del usuario a eliminar
+    const { id } = req.params;
 
     // Borrado de forma logica
     const usuario = await Usuario.findByIdAndUpdate(id,{
         estado: false
     });
 
+    // el usuario que elimino al otro usuario
+    const usuarioAutenticado = req.usuario;
+
     res.json({
-        msg: 'Delete API - controlador',
-        usuario
+        usuario,usuarioAutenticado
     })
 }
 
