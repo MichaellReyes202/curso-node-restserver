@@ -1,17 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceso denegado</title>
+    <title>Google Sign-in</title>
+    <!-- <meta name="google-signin-client_id" content="664758785852-n989jupfk78uh1hm8t4gafv176mpvf7p.apps.googleusercontent.com"> -->
 </head>
+
 <body>
-    <h1>Acceso denegado</h1>
+    <h1>Google Sign-in</h1>
+    <hr>
+
+    <!-- De la forma vieja de hacer la autentiacion con gogole -->
+    <!-- <div class="g-signin2" data-onsuccess="onSignIn"></div>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script>
+        function onSignIn(googleUser) {
+            var profile = googleUser.getBasicProfile();
+            console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+            console.log('Name: ' + profile.getName());
+            console.log('Image URL: ' + profile.getImageUrl());
+            console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+        }
+    </script> -->
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <!-- <div id="g_id_onload"
+        data-client_id="664758785852-n989jupfk78uh1hm8t4gafv176mpvf7p.apps.googleusercontent.com"
+        data-auto_select="true"
+        >
+    </div>
+    <button id="mierda">Salir</button>
+    <script>
+        const button = document.getElementById("mierda");
+        button.onclick = () => {
+            google.accounts.id.disableAutoSelect();
+        }
+    </script> -->
+    
+    <div id="buttonDiv" ></div>
     <br>
-    <p>
-        Cree esta mierda solo para saludar , Mauro Gomez pedazo de mierda
-        pdt : te quiero, mierda
-    </p>
+    <button id="signout">Log Out</button>
+    <script>
+        console.log(window.location.hostname.includes("localhost"));
+
+
+        let url = (window.location.hostname.includes("localhost")) ? 
+        "http://localhost:8080/api/auth/google" : 
+        "https://rest---server---node.herokuapp.com/api/auth/google";
+
+
+
+
+        window.onload = function () {
+            google.accounts.id.initialize({
+                client_id: "664758785852-n989jupfk78uh1hm8t4gafv176mpvf7p.apps.googleusercontent.com",
+                callback: handleCredentialResponse
+            });
+            google.accounts.id.renderButton(
+                document.getElementById("buttonDiv"),
+                { theme: "outline", size: "large" }  // customization attributes
+            );
+        }
+        function handleCredentialResponse(response) {
+            console.log("Encoded JWT ID token: " + response.credential);
+
+            const data = {
+                id_token : response.credential
+            }
+            fetch(url,{
+                method : 'POST',
+                headers :{'Content-Type' : 'application/json'},
+                body : JSON.stringify(data)
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log("Mi server : ",data);
+            })
+            .catch(console.log);
+        }
+
+        const $btnlogin = document.getElementById("buttonDiv");
+        const $btnlogout = document.getElementById("signout");
+
+        $btnlogin.addEventListener("click", () =>{
+            google.accounts.id.prompt(); // also display the One Tap dialog
+        });
+        $btnlogout.addEventListener("click", () =>{
+            google.accounts.id.disableAutoSelect();
+            console.log("Logged out");
+        });
+        
+    </script>
+
 </body>
+
 </html>

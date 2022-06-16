@@ -43,6 +43,12 @@ createValidationForAuth = (route) => {
                 check('correo', 'El correo no es valido').isEmail(),
                 check('password', 'El password es obligatoria').not().isEmpty()
             ];
+            break;
+        case 'google':
+            return [
+                check('id_token', 'El token es obligatorio').not().isEmpty()
+            ];
+            break;
         default:
             return [];
     }
